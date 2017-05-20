@@ -1,0 +1,35 @@
+<html>
+<head>
+	<title>노드입문</title>
+	<meta charset="utf-8">
+</head>
+<body>
+채팅클라이언트
+<hr>
+<input type="text" id="name">
+<input type="text" id="msg">
+<button type="button" id="btnSend">전송</button>
+<hr>
+<ul id="ul-msg"></ul>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    $(function() {
+    	var socket=io(); //서버로 접속
+
+    	socket.on('chatServer', function(data) {
+    		$('#ul-msg').append('<li>'+data.name+', '+data.msg+"</li>");
+    	});
+
+    	$('#btnSend').click(function() {
+    		socket.emit('chatClient', { 
+    			name : $('#name').val(),
+    			msg : $('#msg').val()
+    		});
+    		$('#msg').val('');
+    	});
+    });
+</script>
+</body>
+</html>
